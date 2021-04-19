@@ -76,7 +76,7 @@ public class Util {
         return nodestr;
     }
 
-    public static NodeInterface getProcessStub(String name, int port) {
+    public static NodeInterface getProcessStub(String bigInteger, int port) {
 
         NodeInterface nodestub = null;
         Registry registry = null;
@@ -84,7 +84,7 @@ public class Util {
             // Get the registry for this worker node
             registry = LocateRegistry.getRegistry(port);
 
-            nodestub = (NodeInterface) registry.lookup(name);    // remote stub
+            nodestub = (NodeInterface) registry.lookup(bigInteger);    // remote stub
 
         } catch (NotBoundException | RemoteException e) {
             return null;            // if this call fails, then treat the node to have left the ring...or unavailable
