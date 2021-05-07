@@ -45,24 +45,20 @@ public class Util {
 
         // implement: read the descriptions above
         boolean cond = false;
-        BigInteger i = Hash.addressSize();
-        BigInteger j = upper;
-
-        if (lower.compareTo(upper) == 1) {
-            j = upper.add(i);
-            if (id.compareTo(new BigInteger("0")) == 1 || id.compareTo(new BigInteger("0")) == 0 &&
-                    (id.compareTo(upper) == -1 || id.compareTo(upper) == 0)) {
-                id = id.add(i);
-            }
-        }
-        upper = j;
-        if (id.compareTo(lower) >= 0) {
-            if (upper.compareTo(id) >= 0) {
-                cond = true;
-            }
-        }
-
-        return cond;
+        
+		BigInteger tall = Hash.addressSize();
+		if(lower.compareTo(upper)>=0) {
+			upper=upper.add(tall);
+			if(id.compareTo(lower)<0) {
+				id=id.add(tall);
+			}
+		}
+		if(id.compareTo(lower)>=0 && id.compareTo(upper)<=0) {
+			cond=true;
+		}
+		
+		return cond;
+        
     }
 
     public static List<String> toString(List<NodeInterface> list) throws RemoteException {

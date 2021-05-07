@@ -36,18 +36,15 @@ public class ChordLookup {
 
         // get the stub for this successor (Util.getProcessStub())
         NodeInterface stub = null;
-        try {
-            stub = Util.getProcessStub(successor.getNodeName(), successor.getPort());
-        } catch (Exception e) {
-
-        }
+        
+        stub = Util.getProcessStub(successor.getNodeName(), successor.getPort());
+        
         if (stub != null) {
-
-
+        
             // check that key is a member of the set {nodeid+1,...,succID} i.e. (nodeid+1 <= key <= succID) using the ComputeLogic
             if (Util.computeLogic(key, node.getNodeID().add(BigInteger.ONE), stub.getNodeID())) {
                 // if logic returns true, then return the successor
-                return successor;
+                return stub;
 
             } else {
 
@@ -58,11 +55,12 @@ public class ChordLookup {
 
                 return a.findSuccessor(key);
             }
-        } else {
-
-
-            return null;
-        }
+            
+         } else {
+        	 return findHighestPredecessor(key).findSuccessor(key);
+         }
+         
+         
     }
 
     /**
@@ -72,7 +70,10 @@ public class ChordLookup {
      * @throws RemoteException
      */
     private NodeInterface findHighestPredecessor(BigInteger key) throws RemoteException {
-
+    	
+		// starting from the last entry, iterate over the finger table
+		
+		
         // collect the entries in the finger table for this node
 
         List<NodeInterface> entries = node.getFingerTable();
@@ -88,7 +89,7 @@ public class ChordLookup {
 
             // check that finger is a member of the set {nodeID+1,...,ID-1} i.e. (nodeID+1 <= finger <= key-1) using the ComputeLogic
 
-            if (Util.computeLogic(stub.getNodeID(), node.getNodeID().add(BigInteger.ONE), key.subtract(BigInteger.ONE))) {
+            if (Util.computeLogic(finger.getNodeID(), node.getNodeID().add(BigInteger.ONE), key.subtract(BigInteger.ONE))) {
 
                 // if logic returns true, then return the finger (means finger is the closest to key)
 
